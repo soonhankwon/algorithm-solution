@@ -1,21 +1,29 @@
+package twoPointer;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.stream.Stream;
 
-public class Main {
+public class P2559_수열 {
 
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		int[] nk = Stream.of(br.readLine().split(" "))
 				.mapToInt(Integer::parseInt).toArray();
-		int[] temperature = Stream.of(br.readLine().split(" ")).mapToInt(Integer::parseInt).toArray();
+		
+		int[] temperature = Stream.of(br.readLine().split(" "))
+				.mapToInt(Integer::parseInt).toArray();
 
 		int[] prefixSum = new int[nk[0] + 1];
 
 		// 온도 자료구조와 구간합 자료 만들기
-		for (int i = 1; i <= nk[0]; i++) {
-			prefixSum[i] = prefixSum[i - 1] + temperature[i - 1];
+		for (int i = 0; i < nk[0]; i++) {
+			if(i == 0) {
+				prefixSum[i] = temperature[i];
+			} else {
+				prefixSum[i] = prefixSum[i - 1] + temperature[i];
+			}
 		}
 
 		// 연속적인 K일의 온도의 합이 최대가 되는 값 출력
@@ -27,5 +35,3 @@ public class Main {
 		}
 		System.out.println(maxSum);
 	}
-
-}
