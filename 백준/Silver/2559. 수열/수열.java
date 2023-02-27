@@ -35,3 +35,4 @@ public class P2559_수열 {
 		}
 		System.out.println(maxSum);
 	}
+}
