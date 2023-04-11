@@ -26,7 +26,7 @@ public class Main {
             int k = scanner.nextInt();
             int v = scanner.nextInt();
 
-            PriorityQueue<Edge> queue = new PriorityQueue<>();
+            Queue<Edge> queue = new LinkedList<>();
             queue.add(new Edge(v, 0));
             visited = new boolean[N + 1];
             visited[v] = true;
@@ -48,17 +48,12 @@ public class Main {
     }
 }
 
-class Edge implements Comparable<Edge> {
+class Edge {
     int node;
     int usado;
 
     public Edge(int node, int usado) {
         this.node = node;
         this.usado = usado;
-    }
-
-    @Override
-    public int compareTo(Edge o) {
-        return Integer.compare(o.usado, this.usado);
     }
 }
