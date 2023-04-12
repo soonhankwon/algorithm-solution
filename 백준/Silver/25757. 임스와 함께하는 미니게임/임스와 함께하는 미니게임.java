@@ -14,16 +14,16 @@ public class Main {
                 .mapToObj(i -> scanner.nextLine())
                 .collect(Collectors.toSet());
 
-        int count = Math.floorDiv(set.size(), Game.valueOf(game).MaxNumberOfPeople - 1);
+        int count = Math.floorDiv(set.size(), Game.valueOf(game).demandedNumberOfPeople - 1);
         System.out.println(count);
     }
 }
 
 enum Game {
     Y(2), F(3), O(4);
-    final int MaxNumberOfPeople;
+    final int demandedNumberOfPeople;
 
-    Game(int MaxNumberOfPeople) {
-        this.MaxNumberOfPeople = MaxNumberOfPeople;
+    Game(int demandedNumberOfPeople) {
+        this.demandedNumberOfPeople = demandedNumberOfPeople;
     }
 }
