@@ -10,6 +10,9 @@ class Solution {
 
         int gamers = stages.length;
         for (int i = 0; i < stages.length; i++) {
+            if(stages[i] > N) {
+                    break;
+                }
             int failStage = stages[i];
             Stage stage = map.get(failStage);
             if (i < stages.length - 1 && failStage != stages[i + 1]) {
@@ -21,9 +24,6 @@ class Solution {
                 stage.increaseFailSum();
                 map.put(failStage, stage);
             } else {
-                if(stages[i] > N) {
-                    break;
-                }
                 stage.increaseFailSum();
                 stage.calculateFailRate(gamers);
                 map.put(failStage, stage);
@@ -58,10 +58,7 @@ class Solution {
         }
 
         public void calculateFailRate(int gamers) {
-            if (gamers == 0)
-                this.failRate = 0.0;
-            else
-                this.failRate = (double) this.failSum / gamers;
+            this.failRate = (double) this.failSum / gamers;
         }
 
         public int getFailSum() {
