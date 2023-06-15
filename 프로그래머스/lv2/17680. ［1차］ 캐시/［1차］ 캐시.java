@@ -1,8 +1,8 @@
 import java.util.LinkedList;
 import java.util.Queue;
 
-public class 캐시 {
-    public static int solution(int cacheSize, String[] cities) {
+class Solution {
+    public int solution(int cacheSize, String[] cities) {
         Queue<String> cacheQueue = new LinkedList<>();
         int answer = 0;
         if(cacheSize == 0) {
@@ -10,7 +10,7 @@ public class 캐시 {
         }
         for (String city : cities) {
             String cityLowerCased = city.toLowerCase();
-            if (cacheQueue.size() <= cacheSize) {
+            if (cacheQueue.size() < cacheSize) {
                 if(isCityExistCache(cacheQueue, cityLowerCased)) {
                     cachingCaseByHit(cacheQueue, cityLowerCased);
                     answer++;
@@ -33,7 +33,7 @@ public class 캐시 {
         }
         return answer;
     }
-
+    
     private static void cachingCaseByHit(Queue<String> cacheQueue, String cityLowerCased) {
         cacheQueue.remove(cityLowerCased);
         cacheQueue.add(cityLowerCased);
