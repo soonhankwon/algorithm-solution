@@ -36,7 +36,8 @@ class Solution {
         if (isCityExistCache(cacheQueue, city)) {
             cachingCaseByHit(cacheQueue, city);
             answer++;
-        } else {
+        } 
+        else {
             cachingCaseByMissAndCacheSpace(cacheQueue, city, isCacheSpaceUnderCacheSize(cacheSize, cacheQueue));
             answer += 5;
         }
