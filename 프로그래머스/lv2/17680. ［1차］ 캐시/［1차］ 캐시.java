@@ -14,30 +14,20 @@ class Solution {
 
         for (String c : cities) {
             String city = c.toLowerCase();
-            if (isCacheSpaceUnderCacheSize(cacheSize, cacheQueue)) {
-                getExecutionTime(cacheSize, cacheQueue, city);
-            }
-            else {
-                getExecutionTime(cacheSize, cacheQueue, city);
-            }
+            getExecutionTime(cacheSize, cacheQueue, city);
         }
         return answer;
     }
-    
+
     private static boolean isNotUsedCache(int cacheSize) {
         return cacheSize == 0;
-    }
-
-    private static boolean isCacheSpaceUnderCacheSize(int cacheSize, Queue<String> cacheQueue) {
-        return cacheQueue.size() < cacheSize;
     }
 
     private static void getExecutionTime(int cacheSize, Queue<String> cacheQueue, String city) {
         if (isCityExistCache(cacheQueue, city)) {
             cachingCaseByHit(cacheQueue, city);
             answer++;
-        } 
-        else {
+        } else {
             cachingCaseByMissAndCacheSpace(cacheQueue, city, isCacheSpaceUnderCacheSize(cacheSize, cacheQueue));
             answer += 5;
         }
@@ -55,10 +45,13 @@ class Solution {
     private static void cachingCaseByMissAndCacheSpace(Queue<String> cacheQueue, String city, boolean isCacheSpaceUnderCacheSize) {
         if (isCacheSpaceUnderCacheSize) {
             cacheQueue.add(city);
-        }
-        else {
+        } else {
             cacheQueue.poll();
             cacheQueue.add(city);
         }
+    }
+
+    private static boolean isCacheSpaceUnderCacheSize(int cacheSize, Queue<String> cacheQueue) {
+        return cacheQueue.size() < cacheSize;
     }
 }
