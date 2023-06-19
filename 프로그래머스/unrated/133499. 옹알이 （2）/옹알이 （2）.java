@@ -6,9 +6,7 @@ class Solution {
         
         for (String expression : babbling) {
             if (isExpressionRepeated(expression)) continue;
-            expression = convertExpressionWithPatterns(expression);
-            
-            if (isBabyCanBabbling(expression)) {
+            if (isBabyCanBabbling(convertExpressionWithPatterns(expression))) {
                 answer++;
             }
         }
