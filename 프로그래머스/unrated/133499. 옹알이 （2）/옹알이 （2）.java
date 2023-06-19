@@ -1,6 +1,9 @@
+import java.util.Arrays;
+
 class Solution {
     public int solution(String[] babbling) {
         int answer = 0;
+        
         for (String expression : babbling) {
             if (isExpressionRepeated(expression)) continue;
             expression = convertExpressionWithPatterns(expression);
@@ -18,10 +21,9 @@ class Solution {
 
     private static String convertExpressionWithPatterns(String expression) {
         String[] patterns = {"aya", "ye", "woo", "ma"};
-        for(String pattern : patterns) {
-            expression = expression.replace(pattern, " ");
-        }
-        return expression.replace(" ", "");
+        return Arrays.stream(patterns)
+                .reduce(expression, (result, pattern) -> result.replace(pattern, " "))
+                .replaceAll(" ", "");
     }
     
     private static boolean isBabyCanBabbling(String expression) {
