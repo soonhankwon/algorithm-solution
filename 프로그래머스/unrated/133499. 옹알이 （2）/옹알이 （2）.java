@@ -20,7 +20,7 @@ class Solution {
     private static String convertExpressionWithPatterns(String expression) {
         String[] patterns = {"aya", "ye", "woo", "ma"};
         return Arrays.stream(patterns)
-                .reduce(expression, (result, pattern) -> result.replace(pattern, " "))
+                .reduce(expression, (res, pattern) -> res.replace(pattern, " "))
                 .replaceAll(" ", "");
     }
     
