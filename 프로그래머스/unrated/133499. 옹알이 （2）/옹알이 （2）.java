@@ -1,7 +1,6 @@
 class Solution {
     public int solution(String[] babbling) {
         int answer = 0;
-        // 완벽히 일치해야 카운트
         for (String expression : babbling) {
             if (isExpressionRepeated(expression)) continue;
             expression = convertExpressionWithPatterns(expression);
