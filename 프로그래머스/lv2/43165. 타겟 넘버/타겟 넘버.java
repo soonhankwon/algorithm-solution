@@ -13,7 +13,7 @@ class Solution {
     
     private static void dfs(int sum, int[] numbers, int depth) {
         if (isDepthFloor(numbers, depth)) {
-            if (isSumTargetNumber(sum, targetNumber)) {
+            if (isSumTargetNumber(sum)) {
                 count++;
             }
             return;
@@ -23,7 +23,7 @@ class Solution {
     }
 
     private static boolean isDepthFloor(int[] numbers, int depth) {
-        return isSumTargetNumber(depth, numbers.length);
+        return depth == numbers.length;
     }
 
     private static boolean isSumTargetNumber(int sum, int targetNumber) {
