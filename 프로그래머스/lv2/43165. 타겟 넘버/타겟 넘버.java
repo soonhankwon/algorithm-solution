@@ -33,7 +33,7 @@ class Solution {
     }
 
     private static boolean isDepthFloor(int[] numbers, int depth) {
-        return isSumTargetNumber(depth, numbers.length);
+        return depth == numbers.length;
     }
 
     private static boolean isSumTargetNumber(int sum, int targetNumber) {
