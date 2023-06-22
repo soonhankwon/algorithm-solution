@@ -12,8 +12,12 @@ class Solution {
     }
     
     private static void dfs(int sum, int[] numbers, int depth) {
+        if (isNotTargetNumber(numbers)) {
+            return;
+        }
+        
         if (isDepthFloor(numbers, depth)) {
-            if (isSumTargetNumber(sum)) {
+            if (isSumTargetNumber(sum, targetNumber)) {
                 count++;
             }
             return;
@@ -21,9 +25,15 @@ class Solution {
         dfs(sum + numbers[depth], numbers, depth + 1);
         dfs(sum - numbers[depth], numbers, depth + 1);
     }
+    
+    private static boolean isNotTargetNumber(int[] numbers) {
+        int first = numbers[0];
+        int last = numbers[numbers.length - 1];
+        return (int) Math.pow(first + last, 2) < targetNumber;
+    }
 
     private static boolean isDepthFloor(int[] numbers, int depth) {
-        return depth == numbers.length;
+        return isSumTargetNumber(depth, numbers.length);
     }
 
     private static boolean isSumTargetNumber(int sum, int targetNumber) {
