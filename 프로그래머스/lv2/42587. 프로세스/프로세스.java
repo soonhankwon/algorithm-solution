@@ -1,13 +1,10 @@
 import java.util.*;
+import java.util.stream.IntStream;
 
 class Solution {
     public int solution(int[] priorities, int location) {
         Queue<Process> processes = new LinkedList<>();
-        int id = 0;
-        for (int priority : priorities) {
-            processes.add(new Process(id, priority));
-            id++;
-        }
+        IntStream.range(0, priorities.length).forEach(i -> processes.add(new Process(i, priorities[i])));
 
         ArrayList<Process> result = new ArrayList<>();
         int index = 1;
