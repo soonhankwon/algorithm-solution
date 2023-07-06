@@ -9,21 +9,21 @@ class Solution {
                 .mapToObj(Truck::new)
                 .collect(Collectors.toCollection(LinkedList::new));
 
-        int curBridgeWeight = weight;
+        int curBridgeMaxLoadWeight = weight;
         Queue<Truck> bridgeQueue = new LinkedList<>();
         int turn = 1;
         while(!truckQueue.isEmpty() || !bridgeQueue.isEmpty()) {
             if(truckQueue.peek() != null) {
-                if(curBridgeWeight >= truckQueue.peek().getWeight()) {
+                if(curBridgeMaxLoadWeight >= truckQueue.peek().getWeight()) {
                     Truck firstTruck = truckQueue.poll();
                     bridgeQueue.add(firstTruck);
-                    curBridgeWeight -= firstTruck.getWeight();
+                    curBridgeMaxLoadWeight -= firstTruck.getWeight();
                 }
             }
             bridgeQueue.iterator().forEachRemaining(Truck::move);
             if(bridgeQueue.stream().anyMatch(i -> i.getPosition() > bridge_length)) {
                 Truck passedTruck = bridgeQueue.poll();
-                curBridgeWeight += passedTruck.getWeight();
+                curBridgeMaxLoadWeight += passedTruck.getWeight();
             }
             turn++;
         }
