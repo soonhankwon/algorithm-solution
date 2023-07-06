@@ -15,9 +15,9 @@ class Solution {
         while(!truckQueue.isEmpty() || !bridgeQueue.isEmpty()) {
             if(truckQueue.peek() != null) {
                 if(curBridgeMaxLoadWeight >= truckQueue.peek().getWeight()) {
-                    Truck firstTruck = truckQueue.poll();
-                    bridgeQueue.add(firstTruck);
-                    curBridgeMaxLoadWeight -= firstTruck.getWeight();
+                    Truck truck = truckQueue.poll();
+                    bridgeQueue.add(truck);
+                    curBridgeMaxLoadWeight -= truck.getWeight();
                 }
             }
             bridgeQueue.iterator().forEachRemaining(Truck::move);
