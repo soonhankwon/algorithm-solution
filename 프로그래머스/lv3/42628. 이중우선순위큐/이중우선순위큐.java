@@ -7,17 +7,17 @@ class Solution {
 
         for (String operation : operations) {
             String[] split = operation.split(" ");
-            if(split[0].equals("I")) {
+            if (split[0].equals("I")) {
                 numbers.add(Integer.valueOf(split[1]));
-            } else if (split[0].equals("D")) {
-                if(split[1].equals("-1")) {
-                    if(numbers.isEmpty()) {
+            } else {
+                if (split[1].equals("-1")) {
+                    if (numbers.isEmpty()) {
                         continue;
                     }
                     Integer min = numbers.stream().mapToInt(Integer::intValue).min().orElseThrow();
                     numbers.remove(min);
                 } else {
-                    if(numbers.isEmpty()) {
+                    if (numbers.isEmpty()) {
                         continue;
                     }
                     Integer max = numbers.stream().mapToInt(Integer::intValue).max().orElseThrow();
