@@ -7,11 +7,11 @@ class Solution {
         int[] b = {2, 1, 2, 3, 2, 4, 2, 5};
         int[] c = {3, 3, 1, 1, 2, 2, 4, 4, 5, 5};
 
-        int count = count(answers, a);
-        int count2 = count(answers, b);
-        int count3 = count(answers, c);
+        int countA = count(answer, a);
+        int countB = count(answer, b);
+        int countC = count(answer, c);
 
-        int[] res = {count, count2, count3};
+        int[] res = {countA, countB, countC};
 
         int max = Arrays.stream(res).max().orElse(0);
         ArrayList<Integer> ans = new ArrayList<>();
