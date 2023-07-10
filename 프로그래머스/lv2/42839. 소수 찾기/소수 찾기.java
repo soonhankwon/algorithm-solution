@@ -27,7 +27,6 @@ class Solution {
             } else {
                 usedNumber.add(tempStr);
             }
-            System.out.println(sb.toString());
             if (isPrimeNumber(tempStr)) {
                 count++;
             }
