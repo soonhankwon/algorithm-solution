@@ -15,9 +15,7 @@ public class Main {
         int[][] map = new int[n + 1][n + 1];
         for (int i = 1; i <= n; i++) {
             int[] data = Arrays.stream(br.readLine().split(" ")).mapToInt(Integer::parseInt).toArray();
-            for (int j = 1; j <= n; j++) {
-                map[i][j] = data[j - 1];
-            }
+            System.arraycopy(data, 0, map[i], 1, n);
         }
 
         int[][] prefixSum = new int[n + 1][n + 1];
