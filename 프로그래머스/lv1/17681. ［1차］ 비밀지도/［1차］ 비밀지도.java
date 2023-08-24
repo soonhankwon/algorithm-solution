@@ -22,9 +22,6 @@ class Solution {
             secondMap[i] = s2.toString();
         });
 
-        System.out.println(Arrays.toString(firstMap));
-        System.out.println(Arrays.toString(secondMap));
-
         String[] answer = new String[n];
         for(int i = 0; i < firstMap.length; i++) {
             StringBuilder sb = new StringBuilder();
