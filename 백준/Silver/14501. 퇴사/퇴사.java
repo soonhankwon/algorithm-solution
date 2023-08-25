@@ -7,13 +7,15 @@ import java.util.List;
 
 public class Main {
 
-    static List<int[]> interviews = new ArrayList<>();
+    static List<int[]> interviews;
     static int answer;
     static int n;
+    static int[] dp;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         n = Integer.parseInt(br.readLine());
+        interviews = new ArrayList<>();
 
         for (int i = 0; i < n; i++) {
             interviews.add(Arrays.stream(br.readLine()
@@ -21,24 +23,21 @@ public class Main {
                     .mapToInt(Integer::parseInt)
                     .toArray());
         }
-        answer = Integer.MIN_VALUE;
-        recursion(0, 0);
-        System.out.println(answer);
-    }
+        dp = new int[n + 1]; // DP 테이블
+        Arrays.fill(dp, 0);
 
-    private static void recursion(int depth, int price) {
-        if (depth == n) {
-            answer = Math.max(answer, price);
-            return;
-        } else if (depth > n) {
-            return;
+        answer = Integer.MIN_VALUE;
+        for (int i = n - 1; i >= 0; i--) {
+            if (i + interviews.get(i)[0] > n) {
+                dp[i] = dp[i + 1];
+            } else {
+                dp[i] = Math.max(
+                        dp[(i + interviews.get(i)[0])] + interviews.get(i)[1],
+                        dp[(i + 1)]);
+            }
+            answer = Math.max(dp[i], answer);
         }
 
-        // 상담을 한다면
-        recursion(depth + interviews.get(depth)[0],
-                price + interviews.get(depth)[1]);
-
-        // 상담을 하지 않는다면
-        recursion(depth + 1, price);
+        System.out.println(answer);
     }
 }
