@@ -40,16 +40,17 @@ public class Main {
                 break;
             }
         }
-
+        double availableEventAmount = (double) x / 2;
         while (index1 < index2) {
-            if (nums[index1] + nums[index2] >= (double) x / 2) {
+            long sum = nums[index1] + nums[index2];
+            if (sum >= availableEventAmount) {
                 answer++;
                 n -= 2;
                 index1++;
                 index2--;
                 continue;
             }
-            if (nums[index1] + nums[index2] < x) {
+            if (sum < x) {
                 index1++;
             }
         }
