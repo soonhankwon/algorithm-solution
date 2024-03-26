@@ -14,9 +14,7 @@ public class Main {
             String s = inputs[1];
             int sLength = s.length();
             for (int j = 0; j < sLength; j++) {
-                for (int k = 0; k < r; k++) {
-                    sb.append(s.charAt(j));
-                }
+                sb.append(String.valueOf(s.charAt(j)).repeat(Math.max(0, r)));
             }
             if (i < t - 1) {
                 sb.append("\n");
