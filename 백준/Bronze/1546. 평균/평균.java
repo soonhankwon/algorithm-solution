@@ -1,24 +1,22 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
+import java.util.StringTokenizer;
 
 public class Main {
-
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int n = Integer.parseInt(br.readLine());
 
-        ArrayList<Integer> scores = new ArrayList<>();
-        String[] split = br.readLine().split(" ");
-        for(int i = 0; i < n; i++) {
-            scores.add(Integer.parseInt(split[i]));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        double max = 0;
+        double sum = 0;
+        for (int i = 0; i < n; i++) {
+            double input = Double.parseDouble(st.nextToken());
+            sum += input;
+            max = Math.max(input, max);
         }
-        double max = scores.stream().mapToInt(Integer::intValue).max().orElse(0);
-        double sum = scores.stream()
-                .mapToInt(Integer::intValue)
-                .sum();
-
-        System.out.println(((sum / max) * 100) / n);
+        
+        System.out.println((sum / (n * max)) * 100);
     }
 }
