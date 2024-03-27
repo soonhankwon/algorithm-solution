@@ -1,72 +1,67 @@
-import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 public class Main {
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
+    public static void main(String[] args) throws IOException {
+        //input cnt = 20
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
         double totalScore = 0;
         double totalCredit = 0;
-
         for (int i = 0; i < 20; i++) {
-            String[] s = scanner.nextLine().split(" ");
-            if (s.length <= 2) {
-                break;
-            }
-            if (s[2].equals("P")) {
+            String[] inputs = br.readLine().split(" ");
+            String inputCredit = inputs[1];
+            String inputGrade = inputs[2];
+            // 학점은 인정되지만 스코어에 포함되지 않음(계산X)
+            if (inputGrade.equals("P")) {
                 continue;
             }
-            totalCredit += Double.parseDouble(s[1]);
-            totalScore += Double.parseDouble(s[1]) * calculateScore(s[2]);
+            CreditInfo creditInfo = new CreditInfo(inputCredit, inputGrade);
+            double credit = Double.parseDouble(inputCredit);
+            totalScore += creditInfo.convertScore();
+            totalCredit += credit;
         }
 
         System.out.println(totalScore / totalCredit);
     }
 
-    private static double calculateScore(String credit) {
-        if (String.valueOf(credit.charAt(0)).equals(Credit.A.toString()) &&
-                String.valueOf(credit.charAt(1)).equals("+")) {
-            return Credit.A.creditScore + Credit.PLUS.creditScore;
-        }
-        if (String.valueOf(credit.charAt(0)).equals(Credit.A.toString()) &&
-                String.valueOf(credit.charAt(1)).equals("0")) {
-            return Credit.A.creditScore;
-        }
-        if (String.valueOf(credit.charAt(0)).equals(Credit.B.toString()) &&
-                String.valueOf(credit.charAt(1)).equals("+")) {
-            return Credit.B.creditScore + Credit.PLUS.creditScore;
-        }
-        if (String.valueOf(credit.charAt(0)).equals(Credit.B.toString()) &&
-                String.valueOf(credit.charAt(1)).equals("0")) {
-            return Credit.B.creditScore;
-        }
-        if (String.valueOf(credit.charAt(0)).equals(Credit.C.toString()) &&
-                String.valueOf(credit.charAt(1)).equals("+")) {
-            return Credit.C.creditScore + Credit.PLUS.creditScore;
-        }
-        if (String.valueOf(credit.charAt(0)).equals(Credit.C.toString()) &&
-                String.valueOf(credit.charAt(1)).equals("0")) {
-            return Credit.C.creditScore;
-        }
-        if (String.valueOf(credit.charAt(0)).equals(Credit.D.toString()) &&
-                String.valueOf(credit.charAt(1)).equals("+")) {
-            return Credit.D.creditScore + Credit.PLUS.creditScore;
-        }
-        if (String.valueOf(credit.charAt(0)).equals(Credit.D.toString()) &&
-                String.valueOf(credit.charAt(1)).equals("0")) {
-            return Credit.D.creditScore;
-        } else {
-            return Credit.F.creditScore;
-        }
-    }
-}
+    public static class CreditInfo {
+        String credit;
+        String grade;
 
-enum Credit {
-    A(4.0), B(3.0), C(2.0), D(1.0), F(0.0),
-    PLUS(0.5);
+        public CreditInfo(String credit, String grade) {
+            this.credit = credit;
+            this.grade = grade;
+        }
 
-    final double creditScore;
-
-    Credit(double creditScore) {
-        this.creditScore = creditScore;
+        public double convertScore() {
+            double myCredit = Double.parseDouble(credit);
+            if (grade.equals("A+")) {
+                return myCredit * 4.5;
+            }
+            if (grade.equals("A0")) {
+                return myCredit * 4.0;
+            }
+            if (grade.equals("B+")) {
+                return myCredit * 3.5;
+            }
+            if (grade.equals("B0")) {
+                return myCredit * 3.0;
+            }
+            if (grade.equals("C+")) {
+                return myCredit * 2.5;
+            }
+            if (grade.equals("C0")) {
+                return myCredit * 2.0;
+            }
+            if (grade.equals("D+")) {
+                return myCredit * 1.5;
+            }
+            if (grade.equals("D0")) {
+                return myCredit;
+            }
+            return 0;
+        }
     }
 }
