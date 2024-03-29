@@ -1,28 +1,34 @@
-import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 public class Main {
-	static int[] arr;
-	public static void main(String[] args) {
-		Scanner sc = new Scanner(System.in);
-		int N = sc.nextInt();
-		int M = sc.nextInt();
-		
-		arr = new int[M];
-		dfs(N, M, 0, 1);
-	}
-	
-	public static void dfs(int N, int M, int depth, int index) {
-		if(depth == M) {
-			for(int v : arr) {
-				System.out.print(v + " ");
-			}
-			System.out.println();
-			return;
-		}
-		
-		for(int i = index; i <= N; i++) {
-			arr[depth] = i;
-			dfs(N, M, depth + 1, i + 1);
-		}
-	}
+    static int n;
+    static int m;
+    static int[] arr;
+
+    public static void main(String[] args) throws IOException {
+        //nCr -> n!/(n-r)!r! -> 3! / (3-1)!1! -> 3
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        String[] inputs = br.readLine().split(" ");
+        n = Integer.parseInt(inputs[0]); //4
+        m = Integer.parseInt(inputs[1]); //2
+        arr = new int[m];
+        recursion(0, 1);
+    }
+
+    private static void recursion(int depth, int index) {
+        if (depth == m) {
+            for (int i : arr) {
+                System.out.print(i + " ");
+            }
+            System.out.println();
+            return;
+        }
+
+        for (int i = index; i <= n; i++) {
+            arr[depth] = i;
+            recursion(depth + 1, i + 1);
+        }
+    }
 }
