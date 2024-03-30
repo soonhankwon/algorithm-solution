@@ -1,7 +1,6 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.regex.Pattern;
 
 public class Main {
 
@@ -9,24 +8,18 @@ public class Main {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int n = Integer.parseInt(br.readLine());
         int m = Integer.parseInt(br.readLine());
-        //pn 만들기
-        String pn = "IOI" + "OI".repeat(n - 1);
-        Pattern pattern = Pattern.compile(pn);
 
-        String s = br.readLine();
-        int start = 0;
-        int end = pn.length() - 1;
+        char[] chars = br.readLine().toCharArray();
+        // 크기 m의 배열
+        int[] arr = new int[m];
         int cnt = 0;
-        for (int i = 0; i < 1_000_000; i++) {
-            if (end == s.length()) {
-                break;
+        for (int i = 1; i < m - 1; i++) {
+            if (chars[i] == 'O' && chars[i + 1] == 'I') {
+                arr[i + 1] = arr[i - 1] + 1;
+                if (arr[i + 1] >= n && chars[i - 2 * n + 1] == 'I') {
+                    cnt++;
+                }
             }
-            String substring = s.substring(start, end + 1);
-            if (pattern.matcher(substring).matches()) {
-                cnt++;
-            }
-            start++;
-            end++;
         }
         System.out.println(cnt);
         br.close();
