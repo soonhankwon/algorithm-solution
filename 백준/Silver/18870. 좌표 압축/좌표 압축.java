@@ -4,6 +4,8 @@ import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
 public class Main {
     public static void main(String[] args) throws IOException {
@@ -14,18 +16,19 @@ public class Main {
         int[] originInputs = Arrays.stream(br.readLine().split(" "))
                 .mapToInt(Integer::parseInt)
                 .toArray();
-        
-        // 중복이 제거된 정렬 배열을 만듬(압축)
-        int[] sortedInputs = Arrays.stream(originInputs)
-                .distinct()
-                .sorted()
-                .toArray();
-        
+
+        // 중복이 제거된 정렬 배열을 만듬(압축) <- TreeSet으로 개선 o(logn) RedBlackTree
+        Set<Integer> set = new TreeSet<>();
+        for (int i = 0; i < n; i++) {
+            set.add(originInputs[i]);
+        }
+
         //각 좌표의 순위를 저장
         Map<Integer, Integer> map = new HashMap<>();
-        int length = sortedInputs.length;
-        for (int i = 0; i < length; i++) {
-            map.put(sortedInputs[i], i);
+        int ranking = 0;
+        for (Integer ele : set) {
+            map.put(ele, ranking);
+            ranking++;
         }
 
         StringBuilder sb = new StringBuilder();
