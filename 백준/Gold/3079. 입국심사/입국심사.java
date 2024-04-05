@@ -27,27 +27,30 @@ public class Main {
         long min = 0;
         long max = m * checkPoint[checkPoint.length - 1];
         while (min <= max) {
-            // 이분탐색
+            // 이분탐색 - 범위(0 ~ 모든 인원이 통과하는데 오래 소요되는 시간)
             long mid = (min + max) / 2;
+
             long sum = 0;
             for (long checkTime : checkPoint) {
-                // mid 초 내에 해당 심사대에서 심사받을 수 있는 최대 인원 수
+                // mid 초(전체소요시간) 내에 해당 심사대에서 심사받을 수 있는 최대 인원 수!
                 long cnt = mid / checkTime;
 
+                // 인원보다 크면 break;
                 if (sum >= m) {
                     break;
                 }
                 sum += cnt;
             }
-            
+
             if (sum >= m) {
                 max = mid - 1;
                 res = Math.min(mid, res);
-            } else {
-                min = mid + 1;
+                continue;
             }
+            min = mid + 1;
         }
 
         System.out.println(res);
+        br.close();
     }
 }
