@@ -66,14 +66,4 @@ public class Main {
         System.out.println(sb);
         br.close();
     }
-
-    private static class Pair {
-        int x;
-        int y;
-
-        public Pair(int x, int y) {
-            this.x = x;
-            this.y = y;
-        }
-    }
 }
