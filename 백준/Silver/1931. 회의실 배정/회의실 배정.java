@@ -1,66 +1,54 @@
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Scanner;
+import java.io.InputStreamReader;
+import java.util.Arrays;
+import java.util.PriorityQueue;
 
 public class Main {
 
-	public static void main(String[] args) throws NumberFormatException, IOException {
-		Scanner sc = new Scanner(System.in);
+    static int cnt, endTime;
 
-		int n = sc.nextInt();
-		List<Meeting> meetings = new ArrayList<>();
-		// 회의 데이터 자료구조 만들기
-		for (int i = 0; i < n; i++) {
-			int start = sc.nextInt();
-			int end = sc.nextInt();
-			meetings.add(new Meeting(start, end));
-		}
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int n = Integer.parseInt(br.readLine());
+        PriorityQueue<Meeting> pq = new PriorityQueue<>();
 
-		// 끝나는 시간을 기준으로 오름차순 정렬 (Greedy)
-		Collections.sort(meetings);
+        for (int i = 0; i < n; i++) {
+            int[] inputs = Arrays.stream(br.readLine().split(" "))
+                    .mapToInt(Integer::parseInt)
+                    .toArray();
 
-		int cnt = 0;
-		int endTime = 0;
-		for (Meeting meeting : meetings) {
-			if (meeting.getMeetingStart() >= endTime) {
-				// 선택된 회의가 끝난 시간 이후에 시작하는 경우
-				cnt++;
-				endTime = meeting.getMeetingEnd();
-			}
-		}
+            pq.add(new Meeting(inputs[0], inputs[1]));
+        }
 
-		System.out.println(cnt);
-	}
+        endTime = -1;
+        while (!pq.isEmpty()) {
+            Meeting meeting = pq.poll();
+            if (meeting.start >= endTime) {
+                cnt++;
+                endTime = meeting.end;
+            }
+        }
+        System.out.println(cnt);
+        br.close();
+    }
 
-}
+    private static class Meeting implements Comparable<Meeting> {
+        int start;
+        int end;
 
-class Meeting implements Comparable<Meeting> {
-	private int start;
-	private int end;
+        // 끝나는 시간이 같을 경우 시작시간 기준으로 정렬
+        @Override
+        public int compareTo(Meeting o) {
+            if (this.end == o.end) {
+                return this.start - o.start;
+            }
+            return this.end - o.end;
+        }
 
-	public Meeting(int start, int end) {
-		this.start = start;
-		this.end = end;
-	}
-
-	public int getMeetingStart() {
-		return this.start;
-	}
-
-	public int getMeetingEnd() {
-		return this.end;
-	}
-
-	// 끝나는 시간을 기준으로 오름차순 정렬
-    // 끝나는 시간이 같은 경우 시작시간 기준으로 정렬
-	@Override
-	public int compareTo(Meeting o) {
-		if (this.end == o.end) {
-			return this.start - o.start;
-		} else {
-			return this.end - o.end;
-		}
-	}
+        public Meeting(int start, int end) {
+            this.start = start;
+            this.end = end;
+        }
+    }
 }
