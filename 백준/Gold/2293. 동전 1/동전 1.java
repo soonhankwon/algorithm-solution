@@ -4,7 +4,7 @@ import java.io.InputStreamReader;
 import java.util.Arrays;
 
 /*
- * 동전 1 -> DP 최적화
+ * 동전 1 -> DP 최적화!!
  */
 public class Main {
 
@@ -25,9 +25,15 @@ public class Main {
 
         for (int i = 1; i <= n; i++) {
             arr[i] = Integer.parseInt(br.readLine());
-            int now = arr[i];
-            for (int j = now; j <= k; j++) {
-                dp[j] += dp[j - now];
+            int coin = arr[i];
+            for (int j = coin; j <= k; j++) {
+                // j: 1 2 3 4 5 (target - k)
+                // 1: 1 1 1 1 1 (1로 k를 만들수 있는 경우의 수)
+                // 2: 1 2 2 3 3 (1,2 k를 만들수 있는 경우의 수)
+                // 5: 1 2 2 3 4 (1,2,5 k를 만들수 있는 경우의 수)
+                if (j >= coin) {
+                    dp[j] += dp[j - coin];
+                }
             }
         }
         System.out.println(dp[k]);
