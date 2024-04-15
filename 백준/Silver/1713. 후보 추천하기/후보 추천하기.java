@@ -32,34 +32,46 @@ public class Main {
                     .filter(student -> student.id == studentId)
                     .findFirst();
 
+            // Id 가 존재하는 경우
             if (optionalStudent.isPresent()) {
                 Student student = optionalStudent.get();
                 student.cnt++;
-            } else {
-                if (students.size() < n) {
-                    students.add(new Student(studentId, 1, i));
-                    continue;
-                }
-                int min = students.stream()
-                        .map(student -> student.cnt)
-                        .min(Comparator.comparingInt(Integer::intValue))
-                        .get();
-
-                long minCnt = students.stream().filter(student -> student.cnt == min)
-                        .count();
-
-                Optional<Student> optionalDeleteStudent;
-                if (minCnt > 1) {
-                    optionalDeleteStudent = students.stream().filter(student -> student.cnt == min)
-                            .min(Comparator.comparing(student -> student.time));
-
-                } else {
-                    optionalDeleteStudent = students.stream().filter(student -> student.cnt == min)
-                            .min(Comparator.comparing(student -> student.cnt));
-                }
-                optionalDeleteStudent.ifPresent(students::remove);
-                students.add(new Student(studentId, 1, i));
+                continue;
             }
+
+            // Id 가 존재하지 않는 경우 - 프레임 공간이 남은 경우
+            if (students.size() < n) {
+                students.add(new Student(studentId, 1, i));
+                continue;
+            }
+
+            // Id 가 존재하지 않는 경우 - 프레임 공간이 남지 않은 경우
+            // 추천 횟수의 최소값 카운트
+            int min = students.stream()
+                    .map(student -> student.cnt)
+                    .min(Comparator.comparingInt(Integer::intValue))
+                    .get();
+
+            // 최소값을 가지고 있는 학생 카운트
+            long minCnt = students.stream().filter(student -> student.cnt == min)
+                    .count();
+
+            Optional<Student> optionalDeleteStudent;
+            // 최소값을 가지고 있는 학생이 다수라면 - 해당 학생중 시간이 가장 오래된 학생
+            if (minCnt > 1) {
+                optionalDeleteStudent = students.stream().filter(student -> student.cnt == min)
+                        .min(Comparator.comparing(student -> student.time));
+
+            }
+            // 최소값을 가지고 있는 학생이 하나라면 - 추천횟수가 가장 적은 학생
+            else {
+                optionalDeleteStudent = students.stream().filter(student -> student.cnt == min)
+                        .min(Comparator.comparing(student -> student.cnt));
+            }
+            // 골라서 삭제함
+            optionalDeleteStudent.ifPresent(students::remove);
+            // 그리고 새로운 학생 추가
+            students.add(new Student(studentId, 1, i));
         }
 
         StringBuilder sb = new StringBuilder();
