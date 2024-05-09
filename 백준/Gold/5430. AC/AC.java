@@ -7,6 +7,7 @@ import java.util.Deque;
 public class Main {
 
     static StringBuilder sb = new StringBuilder();
+    static Deque<Integer> deque;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader((System.in)));
@@ -19,7 +20,7 @@ public class Main {
             String input = br.readLine();
             char[] chars = operation.toCharArray();
 
-            Deque<Integer> deque = new ArrayDeque<>();
+            deque = new ArrayDeque<>();
             int inputLength = input.length();
             if (inputLength > 2) {
                 String[] split = input.substring(1, inputLength - 1).split(",");
@@ -52,14 +53,14 @@ public class Main {
             if (isError) {
                 sb.append("error\n");
             } else {
-                print(deque, isReversed);
+                print(isReversed);
             }
-            //케이스 끝
         }
         System.out.println(sb);
+        br.close();
     }
 
-    static void print(Deque<Integer> deque, boolean isReverse) {
+    private static void print(boolean isReversed) {
 
         if (deque.isEmpty()) {
             sb.append("[]\n");
@@ -67,7 +68,7 @@ public class Main {
         }
         sb.append("[");
         int size = deque.size();
-        if (isReverse) {
+        if (isReversed) {
             for (int i = 0; i < size - 1; i++) {
                 sb.append(deque.pollLast()).append(",");
             }
