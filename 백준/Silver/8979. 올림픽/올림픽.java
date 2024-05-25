@@ -26,7 +26,7 @@ public class Main {
         while (nowCountryId != k && !pq.isEmpty()) {
             CountryResult nowCountryResult = pq.poll();
             nowCountryId = nowCountryResult.id;
-            if (cr.isSamePlace(nowCountryResult)) {
+            if (!cr.isSamePlace(nowCountryResult)) {
                 index++;
             }
         }
