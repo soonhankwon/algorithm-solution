@@ -1,35 +1,47 @@
-import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.TreeMap;
 
-public class Main{
-	public static void main(String args[]){
-        Scanner scan = new Scanner(System.in);
-        
-        int dice1 = scan.nextInt();
-        int dice2 = scan.nextInt();
-        int dice3 = scan.nextInt();
-        int sum = dice1 + dice2 + dice3;
-        
-        int rewardTriple = 10000 + dice1*1000;
-        int rewardDouble = 1000 + dice1*100;
-        int rewardDouble2 = 1000 + dice2*100;
-        int rewardSingle = dice1*100;
-        int rewardSingle2 = dice2*100;
-        int rewardSingle3 = dice3*100;
-        
-        if(dice1+dice2+dice3 == dice1*3) {
-            System.out.println(rewardTriple);
-        } else if(dice1 == dice2) {
-            System.out.println(rewardDouble);
-        } else if(dice1 == dice3) {
-            System.out.println(rewardDouble);
-        } else if(dice2 == dice3) {
-            System.out.println(rewardDouble2);
-        } else if(dice1 > dice2 && dice1 > dice3) {
-            System.out.println(rewardSingle);
-        } else if(dice2 > dice1 && dice2 > dice3) {
-            System.out.println(rewardSingle2);
-        } else if(dice3 > dice1 && dice3 > dice2) {
-            System.out.println(rewardSingle3);
+public class Main {
+
+    static TreeMap<Integer, Integer> map;
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int[] row = Arrays.stream(br.readLine().split(" "))
+                .mapToInt(Integer::parseInt)
+                .toArray();
+
+        map = new TreeMap<>(Comparator.reverseOrder());
+        for (int i = 0; i < 3; i++) {
+            int num = row[i];
+            map.compute(num, (k, v) -> (v == null) ? 1 : ++v);
         }
+        computeResult();
+        br.close();
+    }
+
+    private static void computeResult() {
+        int size = map.size();
+        if (size == 1) {
+            int num = map.firstKey();
+            System.out.println(10_000 + (num * 1_000));
+            return;
+        }
+        if (size == 2) {
+            map.entrySet()
+                    .stream()
+                    .filter(i -> i.getValue() == 2)
+                    .findFirst()
+                    .ifPresent(i -> {
+                        System.out.println(1_000 + (i.getKey() * 100));
+                    });
+            return;
+        }
+        int num = map.firstKey();
+        System.out.println(num * 100);
     }
 }
