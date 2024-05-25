@@ -13,24 +13,38 @@ public class Main {
 
         int n = inputs[0];
         int k = inputs[1];
+        
         PriorityQueue<CountryResult> pq = new PriorityQueue<>();
+        CountryResult targetCountry = null;
         for (int i = 0; i < n; i++) {
             int[] row = Arrays.stream(br.readLine().split(" "))
                     .mapToInt(Integer::parseInt)
                     .toArray();
-            pq.add(new CountryResult(row[0], row[1], row[2], row[3]));
-        }
-        int nowCountryId = 0;
-        int index = 1;
-        CountryResult cr = pq.peek();
-        while (nowCountryId != k && !pq.isEmpty()) {
-            CountryResult nowCountryResult = pq.poll();
-            nowCountryId = nowCountryResult.id;
-            if (!cr.isSamePlace(nowCountryResult)) {
-                index++;
+            CountryResult country = new CountryResult(row[0], row[1], row[2], row[3]);
+            pq.add(country);
+            if (country.id == k) {
+                targetCountry = country;
             }
         }
-        System.out.println(index);
+
+        int currentRank = 0;
+        int sameRankCount = 0;
+        CountryResult prevCountry = null;
+        while (!pq.isEmpty()) {
+            CountryResult currentCountry = pq.poll();
+            if (prevCountry == null || !currentCountry.isSameRank(prevCountry)) {
+                currentRank += sameRankCount + 1;
+                sameRankCount = 0;
+            } else {
+                sameRankCount++;
+            }
+            currentCountry.rank = currentRank;
+            if (currentCountry == targetCountry) {
+                System.out.println(currentCountry.rank);
+                break;
+            }
+            prevCountry = currentCountry;
+        }
         br.close();
     }
 
@@ -39,6 +53,7 @@ public class Main {
         int gold;
         int silver;
         int bronze;
+        int rank;
 
         public CountryResult(int id, int gold, int silver, int bronze) {
             this.id = id;
@@ -47,20 +62,20 @@ public class Main {
             this.bronze = bronze;
         }
 
-        public boolean isSamePlace(CountryResult countryResult) {
+        private boolean isSameRank(CountryResult countryResult) {
             return this.gold == countryResult.gold && this.silver == countryResult.silver
                     && this.bronze == countryResult.bronze;
         }
 
         @Override
         public int compareTo(CountryResult o) {
-            if (this.gold == o.gold && this.silver == o.silver) {
-                return -1 * (this.bronze - o.bronze);
+            if (this.gold != o.gold) {
+                return o.gold - this.gold;
+            } else if (this.silver != o.silver) {
+                return o.silver - this.silver;
+            } else {
+                return o.bronze - this.bronze;
             }
-            if (this.gold == o.gold) {
-                return -1 * (this.silver - o.silver);
-            }
-            return -1 * (this.gold - o.gold);
         }
     }
 }
