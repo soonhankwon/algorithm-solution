@@ -1,11 +1,13 @@
-import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 public class Main {
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        int n = sc.nextInt();
-        // 1 ~ n 까지의 합 n(n-1)/2
-        long count = (long) n * (n - 1) / 2;
-        System.out.println(count + "\n" + 2);
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int n = Integer.parseInt(br.readLine());
+        long cnt = (long) n * (n - 1) / 2;
+        System.out.println(cnt + "\n" + 2);
+        br.close();
     }
 }
