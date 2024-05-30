@@ -1,32 +1,36 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Arrays;
 
 public class Main {
-    static int n;
-    static int m;
+    static int n, m;
     static int[] arr;
+    static StringBuilder sb;
 
     public static void main(String[] args) throws IOException {
-        //nCr -> n!/(n-r)!r! -> 3! / (3-1)!1! -> 3
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        String[] inputs = br.readLine().split(" ");
-        n = Integer.parseInt(inputs[0]); //4
-        m = Integer.parseInt(inputs[1]); //2
+        int[] inputs = Arrays.stream(br.readLine().split(" "))
+                .mapToInt(Integer::parseInt)
+                .toArray();
+        n = inputs[0];
+        m = inputs[1];
         arr = new int[m];
+        sb = new StringBuilder();
         recursion(0, 1);
+        System.out.println(sb);
+        br.close();
     }
 
-    private static void recursion(int depth, int index) {
+    private static void recursion(int depth, int num) {
         if (depth == m) {
             for (int i : arr) {
-                System.out.print(i + " ");
+                sb.append(i).append(" ");
             }
-            System.out.println();
+            sb.append("\n");
             return;
         }
-
-        for (int i = index; i <= n; i++) {
+        for (int i = num; i <= n; i++) {
             arr[depth] = i;
             recursion(depth + 1, i + 1);
         }
