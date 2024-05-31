@@ -1,55 +1,46 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Map;
+import java.util.Map.Entry;
 import java.util.TreeMap;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
-//팰린드롬
 public class Main {
-    // 1. 문자가 짝수개면 만들수 있다.
-    // 2. 문자하나가 홀수 다른 문자가 짝수면 만들수 있다.
-    // 앞문자열을 만들고 reverse -> 홀수개인 문자는 a + 홀수 + 리버스 a
+
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         String input = br.readLine();
-        Map<String, Integer> map = new TreeMap<>();
-        char[] chars = input.toCharArray();
-        int cLength = chars.length;
+        TreeMap<String, Long> map = input.chars()
+                .mapToObj(c -> String.valueOf(Character.toChars(c)))
+                .collect(Collectors.groupingBy(Function.identity(), TreeMap::new, Collectors.counting()));
 
-        for (int i = 0; i < cLength; i++) {
-            String key = String.valueOf(chars[i]);
-            map.put(key, map.getOrDefault(key, 0) + 1);
-        }
-
-        long oddCnt = map.keySet()
+        long oddCnt = map.values()
                 .stream()
-                .filter(k -> map.get(k) % 2 == 1)
+                .filter(v -> v % 2 == 1)
                 .count();
 
-        String answer;
         if (oddCnt > 1) {
-            answer = "I'm Sorry Hansoo";
-            System.out.println(answer);
+            System.out.println("I'm Sorry Hansoo");
             return;
         }
-
         StringBuilder sb = new StringBuilder();
-        String oddStr = "";
+        String midStr = "";
         if (oddCnt == 1) {
-            oddStr = map.keySet()
+            midStr = map.entrySet()
                     .stream()
-                    .filter(k -> map.get(k) % 2 == 1)
-                    .findFirst()
-                    .orElse(null);
+                    .filter(e -> e.getValue() % 2 == 1)
+                    .map(Entry::getKey)
+                    .findFirst().orElse(null);
         }
-        map.keySet()
-                .forEach(k -> {
-                    Integer value = map.get(k);
-                    sb.append(String.valueOf(k).repeat(Math.max(0, value / 2)));
-                });
+        map.forEach((k, v) -> {
+            sb.append(k.repeat((int) Math.max(0, v / 2)));
+        });
         String firstStr = sb.toString();
         String lastStr = sb.reverse().toString();
-        System.out.println(firstStr + oddStr + lastStr);
-        return;
+        sb.setLength(0);
+        sb.append(firstStr).append(midStr).append(lastStr);
+        System.out.println(sb);
+        br.close();
     }
 }
