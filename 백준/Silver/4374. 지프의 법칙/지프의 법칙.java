@@ -3,6 +3,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeMap;
 import java.util.function.Function;
@@ -14,15 +15,16 @@ public class Main {
     static Pattern pattern = Pattern.compile("[\\W_]+");
     static final String END_SIGNAL = "EndOfText";
     static int n;
+    static Map<String, Long> map;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringBuilder sb = new StringBuilder();
-        while (true) {
-            try {
-                n = Integer.parseInt(br.readLine());
-            } catch (Exception e) {
-                break;
+        String line;
+        while ((line = br.readLine()) != null) {
+            boolean isNumber = line.chars().allMatch(Character::isDigit);
+            if (isNumber) {
+                n = Integer.parseInt(line);
             }
             List<String> words = new ArrayList<>();
             while (true) {
@@ -37,12 +39,11 @@ public class Main {
                     }
                 }
             }
-
-            TreeMap<String, Long> treeMap = words.stream()
+            map = words.stream()
                     .collect(
                             Collectors.groupingBy(Function.identity(), TreeMap::new, Collectors.counting())
                     );
-            List<String> res = treeMap.entrySet().stream()
+            List<String> res = map.entrySet().stream()
                     .filter(e -> e.getValue() == n)
                     .map(Entry::getKey)
                     .collect(Collectors.toList());
