@@ -5,16 +5,23 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+/*
+ * 이분 탐색 최적화 -> 문자열을 자를 때
+ */
 public class Main {
+
+    static String[] arr;
+    static int n, m;
+
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int[] inputs = Arrays.stream(br.readLine().split(" "))
                 .mapToInt(Integer::parseInt)
                 .toArray();
-        int n = inputs[0];
-        int m = inputs[1];
+        n = inputs[0];
+        m = inputs[1];
+        arr = new String[m];
 
-        String[] arr = new String[m];
         br.readLine();
         for (int i = 0; i < n - 1; i++) {
             String row = br.readLine();
@@ -22,22 +29,32 @@ public class Main {
                 arr[j] = i == 0 ? String.valueOf(row.charAt(j)) : arr[j] + row.charAt(j);
             }
         }
-        int cnt = 0;
-        Set<String> set = new HashSet<>();
-        int maxLen = arr[0].length();
-        for (int index = 0; index < maxLen; index++) {
-            for (int i = 0; i < m; i++) {
-                String str = arr[i].substring(index);
-                set.add(str);
-            }
-            if (set.size() != m) {
-                break;
+
+        int left = 0;
+        int right = arr[0].length();
+        int maxUniqueIndex = 0;
+
+        while (left <= right) {
+            int mid = (left + right) / 2;
+            if (isAllStringUnique(mid)) {
+                maxUniqueIndex = mid + 1;
+                left = mid + 1;
             } else {
-                cnt++;
-                set.clear();
+                right = mid - 1;
             }
         }
-        System.out.println(cnt);
+        System.out.println(maxUniqueIndex);
         br.close();
+    }
+
+    private static boolean isAllStringUnique(int index) {
+        Set<String> set = new HashSet<>();
+        for (int i = 0; i < m; i++) {
+            String str = arr[i].substring(index);
+            if (!set.add(str)) {
+                return false;
+            }
+        }
+        return true;
     }
 }
