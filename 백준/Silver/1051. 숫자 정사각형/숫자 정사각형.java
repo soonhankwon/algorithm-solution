@@ -5,8 +5,8 @@ import java.util.Arrays;
 
 public class Main {
 
-    static int n, m, answer;
-    static int[][] map;
+    static int n, m;
+    static char[][] map;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -15,11 +15,9 @@ public class Main {
                 .toArray();
         n = inputs[0];
         m = inputs[1];
-        map = new int[n][m];
+        map = new char[n][m];
         for (int i = 0; i < n; i++) {
-            int[] row = Arrays.stream(br.readLine().split(""))
-                    .mapToInt(Integer::parseInt)
-                    .toArray();
+            char[] row = br.readLine().toCharArray();
             for (int j = 0; j < m; j++) {
                 map[i][j] = row[j];
             }
