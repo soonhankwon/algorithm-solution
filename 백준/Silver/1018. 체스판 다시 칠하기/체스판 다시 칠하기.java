@@ -5,6 +5,7 @@ import java.io.InputStreamReader;
 public class Main {
 
     static String[] board;
+    static final String[] PATTERNS = new String[]{"WBWBWBWB", "BWBWBWBW"};
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -34,15 +35,14 @@ public class Main {
     }
 
     private static int getMinimumRequiredCnt(int startRow, int startCol) {
-        // 두패턴이 짝,홀 또는 홀,짝으로 반복된다.
-        String[] patterns = {"WBWBWBWB", "BWBWBWBW"};
+        // 두 패턴이 짝,홀 또는 홀,짝으로 반복된다.
         int whiteRequiredCnt = 0;
         // 8 * 8 사이즈를 검색하면서 카운트
         for (int i = 0; i < 8; i++) {
             int row = startRow + i;
             for (int j = 0; j < 8; j++) {
                 int col = startCol + j;
-                if (board[row].charAt(col) != patterns[row % 2].charAt(j)) {
+                if (board[row].charAt(col) != PATTERNS[row % 2].charAt(j)) {
                     whiteRequiredCnt++;
                 }
             }
