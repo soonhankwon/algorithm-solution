@@ -17,10 +17,7 @@ public class Main {
         m = inputs[1];
         map = new char[n][m];
         for (int i = 0; i < n; i++) {
-            char[] row = br.readLine().toCharArray();
-            for (int j = 0; j < m; j++) {
-                map[i][j] = row[j];
-            }
+            map[i] = br.readLine().toCharArray();
         }
         // n * n 정사각형 틀
         int index = 1;
