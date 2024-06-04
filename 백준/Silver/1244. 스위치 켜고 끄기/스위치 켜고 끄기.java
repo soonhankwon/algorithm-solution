@@ -3,74 +3,69 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Arrays;
 
+/*
+ * XOR(배타적 논리곱) -> 비트마스킹
+ */
 public class Main {
 
+    static int n, m;
     static int[] arr;
-    static int n;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         n = Integer.parseInt(br.readLine());
-
         arr = Arrays.stream(br.readLine().split(" "))
                 .mapToInt(Integer::parseInt)
                 .toArray();
 
-        int length = arr.length;
-        int m = Integer.parseInt(br.readLine());
+        m = Integer.parseInt(br.readLine());
         for (int i = 0; i < m; i++) {
-            int[] inputs = Arrays.stream(br.readLine().split(" "))
+            int[] row = Arrays.stream(br.readLine().split(" "))
                     .mapToInt(Integer::parseInt)
                     .toArray();
-            boolean isMen = isMen(inputs[0]);
-            int index = inputs[1];
-            //AND - two pointer
-            if (!isMen) {
-                palindromeAndOperation(index - 1);
+
+            int index = row[1];
+            if (!isMen(row)) {
+                swapPalindrome(index - 1);
                 continue;
             }
-            for (int j = 1; j <= length; j++) {
+            for (int j = 1; j <= n; j++) {
                 if (j % index == 0) {
-                    //XOR
                     arr[j - 1] = arr[j - 1] ^ 1;
                 }
             }
         }
+
         StringBuilder sb = new StringBuilder();
-        for (int i = 1; i <= length; i++) {
-            int element = arr[i - 1];
-            if (i == length) {
-                sb.append(element);
-                break;
-            }
+        for (int i = 1; i <= n; i++) {
+            int e = arr[i - 1];
             if (i % 20 == 0) {
-                sb.append(element);
-                sb.append("\n");
+                sb.append(e).append("\n");
                 continue;
             }
-            sb.append(element).append(" ");
+            sb.append(e).append(" ");
         }
         System.out.println(sb);
         br.close();
     }
 
-    private static void palindromeAndOperation(int mid) {
-        int indexLeft = mid - 1; //1
-        int indexRight = mid + 1; //3
+    private static void swapPalindrome(int mid) {
+        int left = mid - 1;
+        int right = mid + 1;
         arr[mid] = arr[mid] ^ 1;
-        while (indexLeft >= 0 && indexRight < n) {
-            if (arr[indexLeft] == arr[indexRight]) {
-                arr[indexLeft] = arr[indexLeft] ^ 1;
-                arr[indexRight] = arr[indexRight] ^ 1;
-                indexLeft--;
-                indexRight++;
-            } else {
-                break;
+        while (left >= 0 && right < n) {
+            if (arr[left] == arr[right]) {
+                arr[left] = arr[left] ^ 1;
+                arr[right] = arr[right] ^ 1;
+                left--;
+                right++;
+                continue;
             }
+            break;
         }
     }
 
-    private static boolean isMen(int num) {
-        return num == 1;
+    private static boolean isMen(int[] row) {
+        return row[0] == 1;
     }
 }
