@@ -2,38 +2,28 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.PriorityQueue;
 
+// eg) 수를 25개 넣음 -> 최소힙 사이즈가 5라면 -> 제일 작은 20개는 아웃됨 -> 인풋 넘버와 최소힙의 루트와 비교후 삽입
 public class Main {
+
     public static void main(String[] args) throws IOException {
-        // N * N 표(정사각형)
-        // n번째 큰 수를 찾는 프로그램
-        // 일단 모든 값을 입력받아야 알 수 있다.
-        // 우선순위 큐(Min Heap) -> reverse -> 삽입에 O(logN) + 맨앞 조회 O(1)
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int n = Integer.parseInt(br.readLine());
-        PriorityQueue<Integer> priorityQueue = new PriorityQueue<>(Comparator.reverseOrder());
+        PriorityQueue<Integer> pq = new PriorityQueue<>();
         for (int i = 0; i < n; i++) {
-            int[] inputs = Arrays.stream(br.readLine().split(" "))
+            Arrays.stream(br.readLine().split(" "))
                     .mapToInt(Integer::parseInt)
-                    .toArray();
-            for (int j = 0; j < n; j++) {
-                priorityQueue.add(inputs[j]);
-            }
+                    .forEach(num -> {
+                        if (pq.size() < n) {
+                            pq.add(num);
+                        } else if (num > pq.peek()) {
+                            pq.poll();
+                            pq.add(num);
+                        }
+                    });
         }
-
-        int cnt = 0;
-        int answer = 0;
-        while (cnt < n) {
-            assert priorityQueue.peek() != null;
-            int poll = priorityQueue.poll();
-            cnt++;
-            if (cnt == n) {
-                answer = poll;
-            }
-        }
-        System.out.println(answer);
+        System.out.println(pq.peek());
         br.close();
     }
 }
