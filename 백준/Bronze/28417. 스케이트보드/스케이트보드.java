@@ -13,10 +13,8 @@ public class Main {
                     .mapToInt(Integer::parseInt)
                     .toArray();
             int runHighScore = Math.max(row[0], row[1]);
-            int[] trickScores = Arrays.stream(Arrays.copyOfRange(row, 2, row.length))
-                    .sorted()
-                    .toArray();
-            answer = Math.max(answer, runHighScore + trickScores[3] + trickScores[4]);
+            Arrays.sort(row, 2, row.length);
+            answer = Math.max(answer, runHighScore + row[5] + row[6]);
         }
         System.out.println(answer);
         br.close();
