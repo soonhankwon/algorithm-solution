@@ -5,93 +5,71 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Queue;
 
-/*
- * 최소 - BFS
- */
 public class Main {
-
+    static int n;
     static boolean[][] visited;
+    static Point targetPoint;
     static int[] dx = {-1, -1, -2, -2, 1, 1, 2, 2};
     static int[] dy = {-2, 2, -1, 1, -2, 2, -1, 1};
-    static int n, gx, gy, answer;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int t = Integer.parseInt(br.readLine());
-
+        StringBuilder sb = new StringBuilder();
         for (int i = 0; i < t; i++) {
             n = Integer.parseInt(br.readLine());
-            // n * n 체스판
+            int[] row1 = Arrays.stream(br.readLine().split(" "))
+                    .mapToInt(Integer::parseInt)
+                    .toArray();
+            int[] row2 = Arrays.stream(br.readLine().split(" "))
+                    .mapToInt(Integer::parseInt)
+                    .toArray();
+            targetPoint = new Point(row2[0], row2[1], 0);
             visited = new boolean[n][n];
-
-            int[] inputs1 = Arrays.stream(br.readLine().split(" "))
-                    .mapToInt(Integer::parseInt)
-                    .toArray();
-
-            //목표 좌표
-            gx = inputs1[0];
-            gy = inputs1[1];
-
-            int[] inputs2 = Arrays.stream(br.readLine().split(" "))
-                    .mapToInt(Integer::parseInt)
-                    .toArray();
-
-            //현재 좌표
-            int nx = inputs2[0];
-            int ny = inputs2[1];
-
-            answer = Integer.MAX_VALUE;
-
-            bfs(new Pair(nx, ny, 0));
-
-            System.out.println(answer);
+            int res = bfs(new Point(row1[0], row1[1], 0));
+            sb.append(res).append("\n");
         }
+        System.out.println(sb);
         br.close();
     }
 
-    static class Pair {
-        int x;
-        int y;
-        int len;
-
-        public Pair(int x, int y, int len) {
-            this.x = x;
-            this.y = y;
-            this.len = len;
-        }
-    }
-
-    private static void bfs(Pair pair) {
-        //현재 좌표와 목표 좌표가 같으면 0(움직일 필요 없음)
-        if (pair.x == gx && pair.y == gy) {
-            answer = 0;
-            return;
-        }
-
-        Queue<Pair> queue = new LinkedList<>();
-        queue.add(pair);
-        visited[pair.x][pair.y] = true;
-
+    private static int bfs(Point startPoint) {
+        Queue<Point> queue = new LinkedList<>();
+        queue.add(startPoint);
+        visited[startPoint.x][startPoint.y] = true;
         while (!queue.isEmpty()) {
-            Pair node = queue.poll();
+            Point nowPoint = queue.poll();
+            if (nowPoint.x == targetPoint.x && nowPoint.y == targetPoint.y) {
+                return nowPoint.len;
+            }
             for (int i = 0; i < 8; i++) {
-                int x1 = node.x + dx[i];
-                int y1 = node.y + dy[i];
-
-                if (isMovable(x1, y1) && !visited[x1][y1]) {
-                    visited[x1][y1] = true;
-                    queue.add(new Pair(x1, y1, node.len + 1));
+                int nx = nowPoint.x + dx[i];
+                int ny = nowPoint.y + dy[i];
+                if (!isMovable(nx, ny)) {
+                    continue;
                 }
-
-                if (x1 == gx && y1 == gy) {
-                    answer = Math.min(answer, node.len + 1);
-                    break;
+                if (!visited[nx][ny]) {
+                    queue.add(new Point(nx, ny, nowPoint.len + 1));
+                    visited[nx][ny] = true;
                 }
             }
         }
+        return 0;
     }
 
     private static boolean isMovable(int x, int y) {
         return x >= 0 && x < n && y >= 0 && y < n;
+    }
+
+    private static class Point {
+        int x;
+        int y;
+        int len;
+
+        public Point(int x, int y, int len) {
+            this.x = x;
+            this.y = y;
+            this.len = len;
+        }
     }
 }
