@@ -5,26 +5,26 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 
 public class Main {
-    static ArrayList<ArrayList<Integer>> graph;
-    static Queue<Integer> queue;
-    static int[] visited;
-    static int n, m, r;
+
+    static List<ArrayList<Integer>> graph;
+    static boolean[] visited;
+    static int[] result;
 
     public static void main(String[] args) throws IOException {
-        // n 개의 정점, m 개의 간선 그리고 무방향 그래프이다.
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int[] inputs = Arrays.stream(br.readLine().split(" "))
                 .mapToInt(Integer::parseInt)
                 .toArray();
-        n = inputs[0]; // vertex 5
-        m = inputs[1]; // edge 5
-        r = inputs[2]; // 시작 정점 1
-
         graph = new ArrayList<>();
-        for (int i = 0; i <= n; i++) {
+        int n = inputs[0];
+        int m = inputs[1];
+        int r = inputs[2];
+
+        for (int i = 0; i < n + 1; i++) {
             graph.add(new ArrayList<>());
         }
 
@@ -32,43 +32,36 @@ public class Main {
             int[] row = Arrays.stream(br.readLine().split(" "))
                     .mapToInt(Integer::parseInt)
                     .toArray();
-
             int v1 = row[0];
             int v2 = row[1];
             graph.get(v1).add(v2);
             graph.get(v2).add(v1);
         }
 
-        for (ArrayList<Integer> g : graph) {
-            Collections.sort(g);
-        }
-
-        visited = new int[n];
-        queue = new LinkedList<>();
+        graph.forEach(Collections::sort);
+        visited = new boolean[n + 1];
+        result = new int[n];
         bfs(r);
-
-        for (int order : visited) {
-            System.out.println(order);
-        }
+        StringBuilder sb = new StringBuilder();
+        Arrays.stream(result).forEach(i -> sb.append(i).append("\n"));
+        System.out.println(sb);
         br.close();
     }
 
-    private static void bfs(int startVertex) {
-        queue.add(startVertex);
-        int cnt = 1;
-
-        visited[startVertex - 1] = cnt++;
-
+    private static void bfs(int startNode) {
+        int index = 0;
+        Queue<Integer> queue = new LinkedList<>();
+        queue.add(startNode);
+        visited[startNode] = true;
         while (!queue.isEmpty()) {
-            int node = queue.poll();
-
-            ArrayList<Integer> edges = graph.get(node);
-            for (Integer n : edges) {
-                if (visited[n - 1] != 0) {
-                    continue;
+            int nowNode = queue.poll();
+            result[nowNode - 1] = ++index;
+            ArrayList<Integer> adjNodes = graph.get(nowNode);
+            for (Integer adjNode : adjNodes) {
+                if (!visited[adjNode]) {
+                    queue.add(adjNode);
+                    visited[adjNode] = true;
                 }
-                queue.add(n);
-                visited[n - 1] = cnt++;
             }
         }
     }
