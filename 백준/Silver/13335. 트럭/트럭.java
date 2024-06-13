@@ -1,93 +1,71 @@
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 public class Main {
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        int n = scanner.nextInt(); // Truck's number
-        int w = scanner.nextInt(); // Bridge's length
-        int L = scanner.nextInt(); // Bridge's max weight
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int[] inputs = Arrays.stream(br.readLine().split(" "))
+                .mapToInt(Integer::parseInt)
+                .toArray();
 
-        Bridge bridge = new Bridge(w, L, new LinkedList<>());
+        int w = inputs[1];
+        int l = inputs[2];
 
-        Queue<Truck> waitingQueue = IntStream.range(0, n)
-                .mapToObj(i -> new Truck(scanner.nextInt(), 0))
+        Bridge bridge = new Bridge(w, l);
+        Queue<Truck> waitingQueue = Arrays.stream(br.readLine().split(" "))
+                .map(i -> new Truck(Integer.parseInt(i), 0))
                 .collect(Collectors.toCollection(LinkedList::new));
 
         int time = 0;
         int totalWeight = 0;
-        while (!waitingQueue.isEmpty() || !bridge.isEmpty()) {
+        Queue<Truck> bridgeQueue = bridge.queue;
+        while (!waitingQueue.isEmpty() || !bridgeQueue.isEmpty()) {
             time++;
-            if (!bridge.isEmpty()) {
-                Truck frontTruck = bridge.getFrontTruck();
-                if (time - frontTruck.getEnterTime() == w) {
-                    totalWeight -= frontTruck.getWeight();
-                    bridge.poll();
+            if (!bridgeQueue.isEmpty()) {
+                Truck frontTruck = bridgeQueue.peek();
+                if (time - frontTruck.enterTime == w) {
+                    totalWeight -= frontTruck.weight;
+                    bridge.currentWeight -= frontTruck.weight;
+                    bridgeQueue.poll();
                 }
             }
-
-            if (!waitingQueue.isEmpty() && totalWeight + waitingQueue.peek().getWeight() <= L) {
+            if (!waitingQueue.isEmpty() && totalWeight + waitingQueue.peek().weight <= l) {
                 Truck truck = waitingQueue.poll();
-                totalWeight += truck.getWeight();
-                bridge.offer(truck, time);
+                totalWeight += truck.weight;
+                truck.enterTime = time;
+                bridgeQueue.add(truck);
+                bridge.currentWeight += truck.weight;
             }
         }
         System.out.println(time);
-    }
-}
-
-class Truck {
-    private final int weight;
-    private int enterTime;
-
-    public Truck(int weight, int enterTime) {
-        this.weight = weight;
-        this.enterTime = enterTime;
+        br.close();
     }
 
-    public int getWeight() {
-        return this.weight;
+    private static class Truck {
+        int weight;
+        int enterTime;
+
+        public Truck(int weight, int enterTime) {
+            this.weight = weight;
+            this.enterTime = enterTime;
+        }
     }
 
-    public int getEnterTime() {
-        return this.enterTime;
-    }
+    private static class Bridge {
+        int length;
+        int maxWeight;
+        int currentWeight;
+        Queue<Truck> queue;
 
-    public void setEnterTime(int enterTime) {
-        this.enterTime = enterTime;
-    }
-}
-
-class Bridge {
-    private final int length;
-    private final int maxWeight;
-    private final Queue<Truck> queue;
-
-    private int currentWeight;
-
-    public Bridge(int length, int maxWeight, Queue<Truck> queue) {
-        this.length = length;
-        this.maxWeight = maxWeight;
-        this.queue = queue;
-    }
-
-    public void offer(Truck truck, int enterTime) {
-        truck.setEnterTime(enterTime);
-        queue.offer(truck);
-        currentWeight += truck.getWeight();
-    }
-
-    public void poll() {
-        Truck truck = queue.poll();
-        currentWeight -= truck.getWeight();
-    }
-
-    public Truck getFrontTruck() {
-        return queue.peek();
-    }
-
-    public boolean isEmpty() {
-        return queue.isEmpty();
+        public Bridge(int length, int maxWeight) {
+            this.length = length;
+            this.maxWeight = maxWeight;
+            this.queue = new LinkedList<>();
+        }
     }
 }
