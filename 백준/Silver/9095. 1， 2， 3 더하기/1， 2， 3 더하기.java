@@ -9,21 +9,23 @@ public class Main {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int t = Integer.parseInt(br.readLine());
         dp = new int[11];
+
         dp[1] = 1;
         dp[2] = 2;
         dp[3] = 4;
-
-        // 경우의 수 점화식
-        for (int i = 4; i <= 10; i++) {
-            dp[i] = dp[i - 3] + dp[i - 2] + dp[i - 1];
-        }
-
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < t; i++) {
-            int data = Integer.parseInt(br.readLine());
-            sb.append(dp[data]).append("\n");
+            int num = Integer.parseInt(br.readLine());
+            sb.append(recursion(num)).append("\n");
         }
         System.out.println(sb);
         br.close();
+    }
+
+    private static int recursion(int n) {
+        if (dp[n] == 0) {
+            dp[n] = recursion(n - 1) + recursion(n - 2) + recursion(n - 3);
+        }
+        return dp[n];
     }
 }
