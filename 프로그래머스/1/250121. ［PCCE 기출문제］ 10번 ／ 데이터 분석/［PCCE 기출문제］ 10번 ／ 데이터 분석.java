@@ -15,8 +15,9 @@ class Solution {
         items = filterByExt(items, ext, val_ext);
         items = sort(items, sort_by);
 
-        int[][] answer = new int[items.size()][4];
-        for (int i = 0; i < items.size(); i++) {
+        int size = items.size();
+        int[][] answer = new int[size][4];
+        for (int i = 0; i < size; i++) {
             Item item = items.get(i);
             answer[i] = new int[]{item.code, item.date, item.max, item.remain};
         }
