@@ -3,6 +3,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.TreeMap;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class Main {
@@ -10,7 +11,7 @@ public class Main {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         TreeMap<Integer, Long> map = Arrays.stream(br.readLine().split(" "))
                 .map(Integer::valueOf)
-                .collect(Collectors.groupingBy(Integer::valueOf, TreeMap::new, Collectors.counting()));
+                .collect(Collectors.groupingBy(Function.identity(), TreeMap::new, Collectors.counting()));
 
         int size = map.size();
         StringBuilder sb = new StringBuilder();
