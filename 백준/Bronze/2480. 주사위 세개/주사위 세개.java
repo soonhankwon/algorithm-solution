@@ -2,46 +2,30 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.TreeMap;
+import java.util.stream.Collectors;
 
 public class Main {
-
-    static TreeMap<Integer, Integer> map;
-
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        int[] row = Arrays.stream(br.readLine().split(" "))
-                .mapToInt(Integer::parseInt)
-                .toArray();
+        TreeMap<Integer, Long> map = Arrays.stream(br.readLine().split(" "))
+                .map(Integer::valueOf)
+                .collect(Collectors.groupingBy(Integer::valueOf, TreeMap::new, Collectors.counting()));
 
-        map = new TreeMap<>(Comparator.reverseOrder());
-        for (int i = 0; i < 3; i++) {
-            int num = row[i];
-            map.compute(num, (k, v) -> (v == null) ? 1 : ++v);
-        }
-        computeResult();
-        br.close();
-    }
-
-    private static void computeResult() {
         int size = map.size();
+        StringBuilder sb = new StringBuilder();
         if (size == 1) {
-            int num = map.firstKey();
-            System.out.println(10_000 + (num * 1_000));
-            return;
+            sb.append(10_000 + (map.firstKey() * 1_000));
+        } else if (size == 2) {
+            map.forEach((k, v) -> {
+                if (v == 2) {
+                    sb.append(1_000 + (k * 100));
+                }
+            });
+        } else {
+            sb.append(map.lastKey() * 100);
         }
-        if (size == 2) {
-            map.entrySet()
-                    .stream()
-                    .filter(i -> i.getValue() == 2)
-                    .findFirst()
-                    .ifPresent(i -> {
-                        System.out.println(1_000 + (i.getKey() * 100));
-                    });
-            return;
-        }
-        int num = map.firstKey();
-        System.out.println(num * 100);
+        System.out.println(sb);
+        br.close();
     }
 }
