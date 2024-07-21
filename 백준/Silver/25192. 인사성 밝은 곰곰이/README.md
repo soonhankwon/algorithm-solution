@@ -4,7 +4,7 @@
 
 ### 성능 요약
 
-메모리: 28400 KB, 시간: 276 ms
+메모리: 28272 KB, 시간: 244 ms
 
 ### 분류
 
@@ -12,11 +12,11 @@
 
 ### 제출 일자
 
-2024년 5월 30일 22:30:45
+2024년 7월 21일 10:37:58
 
 ### 문제 설명
 
-<p style="text-align: center;"><img alt="인사하는 곰곰이" src="https://upload.acmicpc.net/cd52b787-5b7c-4857-b917-a95c10fe6ee9/-/preview/" style="max-height:120px; object-fit:contain; display:inline-block;"></p>
+<p style="text-align: center;"><img alt="인사하는 곰곰이" src="" style="max-height:120px; object-fit:contain; display:inline-block;"></p>
 
 <p>알고리즘 입문방 오픈 채팅방에서는 새로운 분들이 입장을 할 때마다 곰곰티콘을 사용해 인사를 한다. 이를 본 문자열 킬러 임스는 채팅방의 기록을 수집해 그 중 곰곰티콘이 사용된 횟수를 구해 보기로 했다.</p>
 

@@ -19,8 +19,7 @@ public class Main {
             }
             set.add(input);
         }
-        cnt += set.size();
-        System.out.println(cnt);
+        System.out.println(cnt + set.size());
         br.close();
     }
 }
