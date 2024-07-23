@@ -1,9 +1,9 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.List;
 
 public class Main {
     public static void main(String[] args) throws IOException {
@@ -14,19 +14,18 @@ public class Main {
         int n = inputs[0];
         int k = inputs[1];
 
-        Queue<Integer> queue = new LinkedList<>();
+        List<Integer> arr = new ArrayList<>();
         for (int i = 1; i <= n; i++) {
-            queue.add(i);
+            arr.add(i);
         }
 
         StringBuilder sb = new StringBuilder();
         sb.append("<");
-        while (!queue.isEmpty()) {
-            for (int i = 0; i < k - 1; i++) {
-                queue.add(queue.poll());
-            }
-            sb.append(queue.poll());
-            if (!queue.isEmpty()) {
+        int index = 0;
+        while (!arr.isEmpty()) {
+            index = (index + k - 1) % arr.size();
+            sb.append(arr.remove(index));
+            if (!arr.isEmpty()) {
                 sb.append(", ");
             }
         }
