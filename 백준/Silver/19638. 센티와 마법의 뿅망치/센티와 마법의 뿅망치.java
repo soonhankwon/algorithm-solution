@@ -13,39 +13,40 @@ public class Main {
                 .mapToInt(Integer::parseInt)
                 .toArray();
 
-        int n = inputs[0]; // 인구수
-        int h = inputs[1]; // 센티의키
-        int t = inputs[2]; // 망치 횟수제한
-
         PriorityQueue<Integer> pq = new PriorityQueue<>(Comparator.reverseOrder());
-        for (int i = 0; i < n; i++) {
+        for (int i = 0; i < inputs[0]; i++) {
             pq.add(Integer.parseInt(br.readLine()));
         }
 
-        String answer = "NO";
-        Function<Integer, Integer> halfFunction = i -> i / 2;
+        Function<Integer, Integer> getHalf = i -> i / 2;
         int cnt = 0;
-        for (int i = 0; i < t; i++) {
+        int height = inputs[1];
+        for (int i = 0; i < inputs[2]; i++) {
             Integer giant = pq.poll();
-            if (giant == null || giant < h || giant == 1) {
+            if (giant == null || giant < height || giant == 1) {
                 pq.add(giant);
                 break;
             }
             cnt++;
-            pq.add(halfFunction.apply(giant));
+            pq.add(getHalf.apply(giant));
         }
 
-        if (!pq.isEmpty() && pq.peek() < h) {
+        String answer = "NO";
+        if (!pq.isEmpty() && pq.peek() < height) {
             answer = "YES";
         }
 
+        StringBuilder sb = new StringBuilder();
         if (answer.equals("YES")) {
-            System.out.println(answer);
-            System.out.println(cnt);
+            sb.append(answer).append("\n");
+            sb.append(cnt);
+            System.out.println(sb);
             return;
         }
-        System.out.println(answer);
-        System.out.println(pq.poll());
+
+        sb.append(answer).append("\n");
+        sb.append(pq.poll());
+        System.out.println(sb);
         br.close();
     }
 }
