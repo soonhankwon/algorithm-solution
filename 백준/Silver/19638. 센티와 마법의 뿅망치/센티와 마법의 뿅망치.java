@@ -4,7 +4,6 @@ import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.PriorityQueue;
-import java.util.function.Function;
 
 public class Main {
     public static void main(String[] args) throws IOException {
@@ -18,7 +17,6 @@ public class Main {
             pq.add(Integer.parseInt(br.readLine()));
         }
 
-        Function<Integer, Integer> getHalf = i -> i / 2;
         int cnt = 0;
         int height = inputs[1];
         for (int i = 0; i < inputs[2]; i++) {
@@ -28,7 +26,7 @@ public class Main {
                 break;
             }
             cnt++;
-            pq.add(getHalf.apply(giant));
+            pq.add(giant / 2);
         }
 
         String answer = "NO";
