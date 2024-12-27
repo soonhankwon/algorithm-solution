@@ -22,6 +22,7 @@ public class Main {
             int cnt = 0;
             for (int cookie : cookies) {
                 cnt += (cookie / mid);
+                if(cnt >= arr[0]) break;
             }
             if(cnt >= arr[0]) {
                 left = mid + 1;
