@@ -1,69 +1,61 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.PriorityQueue;
-import java.util.Scanner;
 
 public class Main {
-	static int[] unionFind;
 
-	public static void main(String[] args) {
-		Scanner sc = new Scanner(System.in);
+    static int[] par;
 
-		int V = sc.nextInt();
-		int E = sc.nextInt();
-		unionFind = new int[V + 1];
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int[] arr = Arrays.stream(br.readLine().split(" "))
+                .mapToInt(Integer::parseInt)
+                .toArray();
+        par = new int[arr[0] + 1];
+        for (int i = 1; i <= arr[0]; i++) {
+            par[i] = i;
+        }
+        PriorityQueue<Edge> pq = new PriorityQueue<>(Comparator.comparing(e -> e.weight));
+        for (int i = 1; i <= arr[1]; i++) {
+            int[] row = Arrays.stream(br.readLine().split(" "))
+                    .mapToInt(Integer::parseInt)
+                    .toArray();
+            pq.add(new Edge(row[0], row[1], row[2]));
+        }
+        int answer = 0;
+        while (!pq.isEmpty()) {
+            Edge now = pq.poll();
+            if (find(now.startNode) != find(now.endNode)) {
+                union(now.startNode, now.endNode);
+                answer += now.weight;
+            }
+        }
+        System.out.println(answer);
+        br.close();
+    }
 
-		for (int i = 1; i <= V; i++) {
-			unionFind[i] = i;
-		}
+    private static int find(int a) {
+        return a == par[a] ? a : (par[a] = find(par[a]));
+    }
 
-		PriorityQueue<Edge> q = new PriorityQueue<>();
+    private static void union(int a, int b) {
+        a = find(a);
+        b = find(b);
+        if (a != b) {
+            par[b] = a;
+        }
+    }
 
-		for (int i = 1; i <= E; i++) {
-			int A = sc.nextInt();
-			int B = sc.nextInt();
-			int C = sc.nextInt();
-			q.offer(new Edge(A, B, C));
-		}
+    public static class Edge {
+        int startNode, endNode, weight;
 
-		int useEdge = 0;
-		int result = 0;
-
-		while (useEdge < V - 1) {
-			Edge now = q.poll();
-			if (find(now.node) != find(now.endNode)) {
-				union(now.node, now.endNode);
-				result = result + now.value;
-				useEdge++;
-			}
-		}
-		System.out.println(result);
-	}
-
-	private static void union(int a, int b) {
-		a = find(a);
-		b = find(b);
-		if (a != b) {
-			unionFind[b] = a;
-		}
-	}
-
-	private static int find(int a) {
-		if (a == unionFind[a])
-			return a;
-		else
-			return unionFind[a] = find(unionFind[a]);
-	}
-}
-
-class Edge implements Comparable<Edge> {
-	int node, endNode, value;
-	
-	public Edge(int startNode, int endNode, int value) {
-		this.node = startNode;
-		this.endNode = endNode;
-		this.value = value;
-	}
-	@Override
-	public int compareTo(Edge e) {
-		return this.value > e.value ? 1 : -1;
-	}
+        public Edge(int startNode, int endNode, int weight) {
+            this.startNode = startNode;
+            this.endNode = endNode;
+            this.weight = weight;
+        }
+    }
 }
